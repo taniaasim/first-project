@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
 import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 //import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +47,18 @@ public class HelloWorldController {
 		mv.addObject("message", yelling); // the name of the string the variable you're using in message.html inside the mustache braces
 		return mv;
 	}
-	 
 	
+	@GetMapping("say-something")
+	public String makeAChoice(String submittedMessage, String speechChoice, Model model) {
+		String result;
+		if (speechChoice.equals("yell")) {
+			Yeller yeller = new Yeller(submittedMessage);
+			result = yeller.yell();
+		} else {
+			Whisperer whisperer = new Whisperer(submittedMessage);
+			result = whisperer.whisper();	
+		}
+		model.addAttribute("output", result);
+		return "helloworld/mixed-message"; 
+	} 
 }
